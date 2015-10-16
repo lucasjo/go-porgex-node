@@ -80,37 +80,37 @@ func getContext(cfg *config.Config) *daemon.Context {
 	pidperm, err := cfg.UInt("development.daemon.pidfileperm", 0)
 
 	if err != nil {
-		log.Fatalf(("get pidperm config error %v\n", err)
+		log.Fatalf("get pidperm config error %v\n", err)
 	}
 
 	logfile, err := cfg.String("development.daemon.logfilename")
 
 	if err != nil {
-		log.Fatalf(("get logfile config error %v\n", err)
+		log.Fatalf("get logfile config error %v\n", err)
 	}
 
 	logperm, err := cfg.UInt("development.daemon.logfileperm", 0)
 
 	if err != nil {
-		log.Fatalf(("get logfileperm config error %v\n", err)
+		log.Fatalf("get logfileperm config error %v\n", err)
 	}
 
 	workdir, err := cfg.String("development.daemon.workdir")
 
 	if err != nil {
-		log.Fatalf(("get workdir config error %v\n", err)
+		log.Fatalf("get workdir config error %v\n", err)
 	}
 
 	umask, err := cfg.Int("development.daemon.umask")
 
 	if err != nil {
-		log.Fatalf(("get umask config error %v\n", err)
+		log.Fatalf("get umask config error %v\n", err)
 	}
 
 	args, err := cfg.String("developement.daemon.args")
 
 	if err != nil {
-		log.Fatalf(("get args config error %v\n", err)
+		log.Fatalf("get args config error %v\n", err)
 	}
 
 	return &daemon.Context{
