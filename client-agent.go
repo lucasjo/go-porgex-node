@@ -155,6 +155,7 @@ func memUsage() {
 		for _, app := range apps {
 
 			log.Println(app.ID)
+			log.Println(app.ID.Hex())
 
 			/*
 				v := &models.MemStats{}
