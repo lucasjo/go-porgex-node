@@ -11,13 +11,14 @@ import (
 	"github.com/olebedev/config"
 	"github.com/sevlyar/go-daemon"
 
+	lconfig "github.com/lucasjo/go-porgex-node/config"
 	"github.com/lucasjo/go-porgex-node/db"
 	"github.com/lucasjo/go-porgex-node/service"
 	"github.com/lucasjo/go-porgex-node/usage"
 )
 
 var (
-	signam = flag.String("c", "", `send signal to the porgex-node-client
+	signal = flag.String("c", "", `send signal to the porgex-node-client
 			quit - graceful shutdown
 			stop - fast shutdown
 			reload - reloading the configuration file`)
@@ -30,7 +31,7 @@ func main() {
 	daemon.AddCommand(daemon.StringFlag(signal, "stop"), syscall.SIGTERM, termHandler)
 	daemon.AddCommand(daemon.StringFlag(signal, "reload"), syscall.SIGHUP, reloadHandler)
 
-	cntxt := getContext(config.GetConfig(""))
+	cntxt := getContext(lconfig.GetConfig(""))
 
 	if len(daemon.ActiveFlags()) > 0 {
 		d, err := cntxt.Search()
@@ -159,10 +160,10 @@ func memUsage() {
 		for _, app := range apps {
 			v := &models.MemStatus{}
 
-			err := usage.SetMemoryStats(app.Id.String(), v)
+			err := usage.SetMemoryStats(app.ID.String(), v)
 
 			if err != nil {
-				log.Fatalf("App ID %s Memory Usage Setting Error %v\n", app.Id.String(), err)
+				log.Fatalf("App ID %s Memory Usage Setting Error %v\n", app.ID.String(), err)
 			}
 
 			log.Printf("Memory data ", v)
