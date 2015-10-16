@@ -61,7 +61,8 @@ func main() {
 
 	go work()
 
-	err != daemon.ServeSignals()
+	err = daemon.ServeSignals()
+
 	if err != nil {
 		fmt.Errorf("error : %v\n", err)
 	}
@@ -73,43 +74,43 @@ func getContext(cfg *config.Config) *daemon.Context {
 	pidfile, err := cfg.String("development.daemon.pidfilename")
 
 	if err != nil {
-		fmt.Errorf("get pid config error %v\n", err)
+		log.Fatalf("get pid config error %v\n", err)
 	}
 
 	pidperm, err := cfg.UInt("development.daemon.pidfileperm", 0)
 
 	if err != nil {
-		fmt.Errorf("get pidperm config error %v\n", err)
+		log.Fatalf(("get pidperm config error %v\n", err)
 	}
 
 	logfile, err := cfg.String("development.daemon.logfilename")
 
 	if err != nil {
-		fmt.Errorf("get logfile config error %v\n", err)
+		log.Fatalf(("get logfile config error %v\n", err)
 	}
 
 	logperm, err := cfg.UInt("development.daemon.logfileperm", 0)
 
 	if err != nil {
-		fmt.Errorf("get logfileperm config error %v\n", err)
+		log.Fatalf(("get logfileperm config error %v\n", err)
 	}
 
 	workdir, err := cfg.String("development.daemon.workdir")
 
 	if err != nil {
-		fmt.Errorf("get workdir config error %v\n", err)
+		log.Fatalf(("get workdir config error %v\n", err)
 	}
 
 	umask, err := cfg.Int("development.daemon.umask")
 
 	if err != nil {
-		fmt.Errorf("get umask config error %v\n", err)
+		log.Fatalf(("get umask config error %v\n", err)
 	}
 
 	args, err := cfg.String("developement.daemon.args")
 
 	if err != nil {
-		fmt.Errorf("get args config error %v\n", err)
+		log.Fatalf(("get args config error %v\n", err)
 	}
 
 	return &daemon.Context{
