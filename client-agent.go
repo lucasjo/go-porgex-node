@@ -25,6 +25,8 @@ var (
 			quit - graceful shutdown
 			stop - fast shutdown
 			reload - reloading the configuration file`)
+
+	isRun = false
 )
 
 func main() {
@@ -119,24 +121,23 @@ func getContext(cfg *config.Config) *daemon.Context {
 }
 
 var (
-	isRun = false
-
-	stop = make(chan int)
+	stop = make(chan bool)
 	done = make(chan struct{})
 )
 
 func work() {
+
+	ticker := time.NewTicker(time.Second * 5)
+
 	for {
-		log.Println("aaaaaa")
-		go memUsage()
-		time.Sleep(time.Second * 5)
 
 		select {
-		case ok := <-stop:
-			if ok == 0 {
+		case <-ticker.C:
+			go memUsage()
+		case s := <-stop:
+			if s {
 				isRun = true
 			}
-
 		}
 
 		if isRun {
@@ -177,7 +178,7 @@ func memUsage() {
 func termHandler(sig os.Signal) error {
 	log.Println("terminating....")
 
-	stop <- 0
+	stop <- true
 
 	if sig == syscall.SIGQUIT {
 		<-done
