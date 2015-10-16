@@ -63,7 +63,7 @@ func GetCpuUsageStat(path string) (uint64, uint64, error) {
 
 }
 
-func SetCpuUsage(uuid string, stats *models.AppCpuStats) error {
+func SetCpuUsage(uuid string, stats *models.CPUStats) error {
 
 	appCgroupPath := filepath.Join(appCpuAcctPath, uuid)
 
@@ -86,10 +86,10 @@ func SetCpuUsage(uuid string, stats *models.AppCpuStats) error {
 		return err
 	}
 
-	stats.CPUStats.CPUUsage.TotalUsage = totalUsage
-	stats.CPUStats.CPUUsage.UsageInSytemmode = systemModeUsage
-	stats.CPUStats.CPUUsage.UsageInUsermode = userModeUsage
-	stats.CPUStats.CPUUsage.PercpuUsage = perCpuUsage
+	stats.Cpu_usage.Total_usage = totalUsage
+	stats.Cpu_usage.Usage_in_sytemmode = systemModeUsage
+	stats.Cpu_usage.Usage_in_usermode = userModeUsage
+	stats.Cpu_usage.Percpu_usage = perCpuUsage
 
 	return nil
 }
@@ -110,15 +110,15 @@ func getPercpuUsage(path string) ([]uint64, error) {
 	return percpuUsage, nil
 }
 
-func calculateCPUPercent(previousCpu uint64, v *models.AppCpuStats) float64 {
+func calculateCPUPercent(previousCpu uint64, v *models.CPUStats) float64 {
 
 	var cpuPercnt = 0.0
 
-	fmt.Printf("previous : %v , current : %v \n", previousCpu, v.CPUStats.CPUUsage.TotalUsage)
+	fmt.Printf("previous : %v , current : %v \n", previousCpu, v.Cpu_usage.Total_usage)
 
-	cpudeta := float64((v.CPUStats.CPUUsage.TotalUsage - previousCpu)) / float64(1000000000)
+	cpudeta := float64((v.Cpu_usage.Total_usage - previousCpu)) / float64(1000000000)
 
-	cpuPercnt = (cpudeta / float64(len(v.CPUStats.CPUUsage.PercpuUsage))) * 100.0
+	cpuPercnt = (cpudeta / float64(len(v.Cpu_usage.Percpu_usage))) * 100.0
 
 	return cpuPercnt
 
