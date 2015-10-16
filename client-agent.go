@@ -1,18 +1,19 @@
-package main 
+package main
 
 import (
 	"flag"
 	"fmt"
 	"log"
 	"os"
+	"syscall"
 	"time"
 
-	lconfig "github.com/lucasjo/go-porgex-node/config"
 	"github.com/olebedev/config"
 	"github.com/sevlyar/go-daemon"
 
 	"github.com/lucasjo/go-porgex-node/db"
 	"github.com/lucasjo/go-porgex-node/service"
+	"github.com/lucasjo/go-porgex-node/usage"
 )
 
 var (
@@ -20,7 +21,6 @@ var (
 			quit - graceful shutdown
 			stop - fast shutdown
 			reload - reloading the configuration file`)
-		
 )
 
 func main() {
@@ -48,10 +48,10 @@ func main() {
 	}
 
 	if child != nil {
-		return 
+		return
 	}
 
-	defef cntxt.Release()
+	defer cntxt.Release()
 
 	log.Println("========================")
 	log.Println("porgex-node-client start")
@@ -68,14 +68,14 @@ func main() {
 	log.Println("porgex-node-client terminated")
 }
 
-func getContext(cfg *config.Config) *daemon.Context{
+func getContext(cfg *config.Config) *daemon.Context {
 	pidfile, err := cfg.String("development.daemon.pidfilename")
 
 	if err != nil {
 		fmt.Errorf("get pid config error %v\n", err)
 	}
 
-	pidperm, err := cfg.UInt("development.daemon.pidfileperm",0)
+	pidperm, err := cfg.UInt("development.daemon.pidfileperm", 0)
 
 	if err != nil {
 		fmt.Errorf("get pidperm config error %v\n", err)
@@ -116,15 +116,14 @@ func getContext(cfg *config.Config) *daemon.Context{
 		PidFilePerm: pidperm,
 		LogFileName: logfile,
 		LogFilePerm: logperm,
-		WorkDir: workdir,
-		Umask: umask,
-		Args: []strung{args},
+		WorkDir:     workdir,
+		Umask:       umask,
+		Args:        []strung{args},
 	}
 
 }
 
 var (
-
 	isRun = false
 
 	stop = make(chan int)
@@ -132,14 +131,13 @@ var (
 )
 
 func work() {
-	for{
+	for {
 
 		go memUsage()
 		time.Sleep(time.Second * 5)
 
-
 		select {
-		case ok := <- stop :
+		case ok := <-stop:
 			isRun = true
 		}
 
@@ -151,11 +149,10 @@ func work() {
 
 	done <- struct{}{}
 
-
 }
 
 func memUsage() {
-	
+
 	apps := service.GetServerApplication()
 
 	if len(apps) > 0 {
@@ -193,39 +190,38 @@ func reloadHandler(sig os.Signal) error {
 }
 
 /* 이것은 최종적으로 client service 에 반영 되어야 한다
-	conn, err := net.Dial("tcp", "127.0.0.1:3001")
+conn, err := net.Dial("tcp", "127.0.0.1:3001")
 
-	if err != nil {
-		fmt.Errorf("err : %v\n", err)
-		os.Exit(1)
-	}
-	str := &models.MemStats{
-		Id:            bson.NewObjectId(),
-		AppId:         "5000130384e12",
-		Max_usage:     801010,
-		Limit_usage:   801010,
-		Current_usage: 77733,
-		Create_at:     time.Now(),
-	}
+if err != nil {
+	fmt.Errorf("err : %v\n", err)
+	os.Exit(1)
+}
+str := &models.MemStats{
+	Id:            bson.NewObjectId(),
+	AppId:         "5000130384e12",
+	Max_usage:     801010,
+	Limit_usage:   801010,
+	Current_usage: 77733,
+	Create_at:     time.Now(),
+}
 
-	d, e := json.Marshal(str)
-	fmt.Printf("str : %v\n", string(d))
-	hostname, _ := os.Hostname()
+d, e := json.Marshal(str)
+fmt.Printf("str : %v\n", string(d))
+hostname, _ := os.Hostname()
 
-	req := &models.Request{
-		Service:  "memory",
-		Fromhost: hostname,
-		Data:     d,
-	}
+req := &models.Request{
+	Service:  "memory",
+	Fromhost: hostname,
+	Data:     d,
+}
 
-	b, e := json.Marshal(req)
+b, e := json.Marshal(req)
 
-	if e != nil {
-		os.Exit(1)
-	}
+if e != nil {
+	os.Exit(1)
+}
 
-	_, err = conn.Write(b)
+_, err = conn.Write(b)
 
-	conn.Close()
-	*/
-
+conn.Close()
+*/
