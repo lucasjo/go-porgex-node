@@ -13,7 +13,9 @@ import (
 
 	lconfig "github.com/lucasjo/go-porgex-node/config"
 	"github.com/lucasjo/go-porgex-node/db"
+	"github.com/lucasjo/go-porgex-node/models"
 	"github.com/lucasjo/go-porgex-node/service"
+	"github.com/lucasjo/go-porgex-node/usage"
 )
 
 var (
@@ -154,20 +156,15 @@ func memUsage() {
 	if len(apps) > 0 {
 		for _, app := range apps {
 
-			log.Println(app.ID)
-			log.Println(app.ID.Hex())
+			v := &models.MemStats{}
 
-			/*
-				v := &models.MemStats{}
+			err := usage.SetMemoryStats(app.ID.Hex(), v)
 
-				err := usage.SetMemoryStats(app.ID.String(), v)
+			if err != nil {
+				log.Fatalf("App ID %s Memory Usage Setting Error %v\n", app.ID.Hex(), err)
+			}
 
-				if err != nil {
-					log.Fatalf("App ID %s Memory Usage Setting Error %v\n", app.ID.String(), err)
-				}
-
-				log.Printf("Memory data ", v)
-			*/
+			log.Printf("Memory data ", v)
 
 		}
 	}
