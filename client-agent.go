@@ -13,6 +13,7 @@ import (
 
 	lconfig "github.com/lucasjo/go-porgex-node/config"
 	"github.com/lucasjo/go-porgex-node/db"
+	"github.com/lucasjo/go-porgex-node/models"
 	"github.com/lucasjo/go-porgex-node/service"
 	"github.com/lucasjo/go-porgex-node/usage"
 )
@@ -77,7 +78,7 @@ func getContext(cfg *config.Config) *daemon.Context {
 		log.Fatalf("get pid config error %v\n", err)
 	}
 
-	pidperm, err := cfg.UInt("development.daemon.pidfileperm", 0)
+	pidperm, err := cfg.UInt("development.daemon.pidfileperm")
 
 	if err != nil {
 		log.Fatalf("get pidperm config error %v\n", err)
@@ -89,7 +90,7 @@ func getContext(cfg *config.Config) *daemon.Context {
 		log.Fatalf("get logfile config error %v\n", err)
 	}
 
-	logperm, err := cfg.UInt("development.daemon.logfileperm", 0)
+	logperm, err := cfg.UInt("development.daemon.logfileperm")
 
 	if err != nil {
 		log.Fatalf("get logfileperm config error %v\n", err)
@@ -120,7 +121,7 @@ func getContext(cfg *config.Config) *daemon.Context {
 		LogFilePerm: logperm,
 		WorkDir:     workdir,
 		Umask:       umask,
-		Args:        []strung{args},
+		Args:        []string{args},
 	}
 
 }
@@ -159,7 +160,7 @@ func memUsage() {
 
 	if len(apps) > 0 {
 		for _, app := range apps {
-			v := &models.MemStatus{}
+			v := &models.MemStats{}
 
 			err := usage.SetMemoryStats(app.ID.String(), v)
 
