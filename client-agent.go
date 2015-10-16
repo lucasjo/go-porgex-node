@@ -154,7 +154,7 @@ func memUsage() {
 	if len(apps) > 0 {
 		for _, app := range apps {
 
-			log.Println(app.ID.String())
+			log.Println(app.ID)
 
 			/*
 				v := &models.MemStats{}
