@@ -129,7 +129,10 @@ func work() {
 
 		select {
 		case ok := <-stop:
-			isRun = true
+			if ok == 0 {
+				isRun = true
+			}
+
 		}
 
 		if isRun {
