@@ -1,0 +1,13 @@
+development:
+ database:
+  host: master.openpaas.co.kr
+  port: 27017
+  username: porgex
+  password: porgex@123
+  dbname: porgex_master
+ tcp:
+  port: :3001
+  host : 127.0.0.1
+ common:
+  logfile: /Users/kikimans/go/src/github.com/lucasjo/porgex/go-collect-server/log
+  loglevel: debug
