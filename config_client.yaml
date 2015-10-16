@@ -18,4 +18,4 @@ development:
   logfilePerm: 0640
   workdir: ./
   umask: 027
-  args: [porgex-node-client daemon]
+  args: porgex-node-client daemon

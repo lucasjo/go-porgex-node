@@ -98,9 +98,7 @@ func getContext(cfg *config.Config) *daemon.Context {
 
 	arg, err := cfg.String("development.daemon.args")
 
-	var args []string
-
-	args[0] = arg
+	args := []string{arg}
 
 	if err != nil {
 		log.Fatalf("get args config error %v\n", err)
@@ -127,7 +125,7 @@ var (
 
 func work() {
 	for {
-
+		log.Println("aaaaaa")
 		go memUsage()
 		time.Sleep(time.Second * 5)
 
