@@ -3,7 +3,7 @@ package config
 import (
 	"testing"
 
-	"github.com/lucasjo/porgex/go-collect-server/config"
+	"github.com/lucasjo/go-porgex-node/config"
 )
 
 func TestGetConfig(t *testing.T) {

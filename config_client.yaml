@@ -9,5 +9,13 @@ development:
   port: :3001
   host : 127.0.0.1
  common:
-  logfile: /Users/kikimans/go/src/github.com/lucasjo/porgex/go-collect-server/log
+  logfile: log
   loglevel: debug
+ daemon:
+  pidfilename: porgex-node.pid
+  pidfileperm: 0644
+  logfilename: porgex-node.log
+  logfilePerm: 0640
+  workdir: ./
+  umask: 027
+  args: [porgex-node-client daemon]
