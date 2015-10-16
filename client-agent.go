@@ -80,7 +80,7 @@ func getContext(cfg *config.Config) *daemon.Context {
 
 	pidperm := cfg.UInt("development.daemon.pidfileperm", 0)
 
-	var pidp int32
+	var pidp uint32
 	pidp = pidperm
 
 	logfile, err := cfg.String("development.daemon.logfilename")
@@ -91,7 +91,7 @@ func getContext(cfg *config.Config) *daemon.Context {
 
 	logperm := cfg.UInt("development.daemon.logfileperm", 0)
 
-	var logp int32
+	var logp uint32
 
 	logp = logperm
 
