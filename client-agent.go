@@ -153,6 +153,8 @@ func memUsage() {
 
 	apps := service.GetServerApplication()
 
+	log.Printf("app count : %v\n", len(apps))
+
 	if len(apps) > 0 {
 		for _, app := range apps {
 			v := &models.MemStats{}
