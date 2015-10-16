@@ -80,6 +80,9 @@ func getContext(cfg *config.Config) *daemon.Context {
 
 	pidperm := cfg.UInt("development.daemon.pidfileperm", 0)
 
+	var pidp int32
+	pidp = pidperm
+
 	logfile, err := cfg.String("development.daemon.logfilename")
 
 	if err != nil {
@@ -87,6 +90,10 @@ func getContext(cfg *config.Config) *daemon.Context {
 	}
 
 	logperm := cfg.UInt("development.daemon.logfileperm", 0)
+
+	var logp int32
+
+	logp = logperm
 
 	workdir, err := cfg.String("development.daemon.workdir")
 
@@ -108,9 +115,9 @@ func getContext(cfg *config.Config) *daemon.Context {
 
 	return &daemon.Context{
 		PidFileName: pidfile,
-		PidFilePerm: pidperm,
+		PidFilePerm: pidp,
 		LogFileName: logfile,
-		LogFilePerm: logperm,
+		LogFilePerm: logp,
 		WorkDir:     workdir,
 		Umask:       umask,
 		Args:        []string{args},
