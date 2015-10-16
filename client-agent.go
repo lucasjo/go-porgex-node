@@ -8,6 +8,8 @@ import (
 	"syscall"
 	"time"
 
+	"gopkg.in/mgo.v2/bson"
+
 	"github.com/olebedev/config"
 	"github.com/sevlyar/go-daemon"
 
@@ -138,6 +140,7 @@ func work() {
 		}
 
 		if isRun {
+			log.Println("bbbbbbb")
 			break
 		}
 
@@ -163,7 +166,7 @@ func memUsage() {
 			if err != nil {
 				log.Fatalf("App ID %s Memory Usage Setting Error %v\n", app.ID.Hex(), err)
 			}
-
+			v.Id = bson.NewObjectId()
 			log.Printf("Memory data ", v)
 
 		}
