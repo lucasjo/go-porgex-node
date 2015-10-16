@@ -96,7 +96,7 @@ func getContext(cfg *config.Config) *daemon.Context {
 		log.Fatalf("get umask config error %v\n", err)
 	}
 
-	args, err := cfg.String("developement.daemon.args")
+	args, err := cfg.String("development.daemon.args")
 
 	if err != nil {
 		log.Fatalf("get args config error %v\n", err)
