@@ -85,7 +85,7 @@ func SetCpuUsage(uuid string, stats *models.CPUStats) error {
 	if err != nil {
 		return err
 	}
-
+	stats.AppId = uuid
 	stats.Cpu_usage.Total_usage = totalUsage
 	stats.Cpu_usage.Usage_in_sytemmode = systemModeUsage
 	stats.Cpu_usage.Usage_in_usermode = userModeUsage

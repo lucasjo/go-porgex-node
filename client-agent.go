@@ -126,8 +126,10 @@ var (
 )
 
 func work() {
+	// 10second 1 call  -> 1 time 360 call
+	ticker := time.NewTicker(time.Second * 10)
 
-	ticker := time.NewTicker(time.Second * 5)
+	log.Printf("start time [ %v ] \n", time.Now())
 
 	for {
 
@@ -141,7 +143,8 @@ func work() {
 		}
 
 		if isRun {
-			log.Println("bbbbbbb")
+			log.Println("usage client stop")
+			ticker.Stop()
 			break
 		}
 
