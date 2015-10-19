@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/lucasjo/go-porgex-node/models"
 	"github.com/lucasjo/go-porgex-node/system"
@@ -90,6 +91,7 @@ func SetCpuUsage(uuid string, stats *models.CPUStats) error {
 	stats.Cpu_usage.Usage_in_sytemmode = systemModeUsage
 	stats.Cpu_usage.Usage_in_usermode = userModeUsage
 	stats.Cpu_usage.Percpu_usage = perCpuUsage
+	stats.CreateAt = time.Now()
 
 	return nil
 }

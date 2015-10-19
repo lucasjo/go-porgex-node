@@ -49,6 +49,7 @@ func SetMemoryStats(uuid string, v *models.MemStats) error {
 	v.Max_usage = maxUsageValue
 	v.Limit_usage = limitValue
 	v.Create_at = time.Now()
+	v.AppId = uuid
 
 	return nil
 
