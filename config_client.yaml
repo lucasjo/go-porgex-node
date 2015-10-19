@@ -16,6 +16,6 @@ development:
   pidfileperm: 0644
   logfilename: porgex-node.log
   logfilePerm: 0640
-  workdir: ./
+  workdir: ./logs
   umask: 027
   args: porgex-node-client daemon
