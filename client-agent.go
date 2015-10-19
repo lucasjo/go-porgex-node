@@ -163,16 +163,18 @@ func sendUsage() {
 	if len(apps) > 0 {
 		for _, app := range apps {
 
+			var err error
+
 			mv := &models.MemStats{}
 			cv := &models.CPUStats{}
 
-			err := usage.SetMemoryStats(app.ID.Hex(), mv)
+			err = usage.SetMemoryStats(app.ID.Hex(), mv)
 
 			if err != nil {
 				log.Fatalf("App ID %s Memory Usage Setting Error %v\n", app.ID.Hex(), err)
 			}
 
-			err := usage.SetCpuUsage(app.ID.Hex(), cv)
+			err = usage.SetCpuUsage(app.ID.Hex(), cv)
 
 			if err != nil {
 				log.Fatalf("App ID %s cpu Usage Setting Error %v\n", app.ID.Hex(), err)
