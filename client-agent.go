@@ -135,7 +135,7 @@ func work() {
 
 		select {
 		case <-ticker.C:
-			go memUsage()
+			go sendUsage()
 		case s := <-stop:
 			if s {
 				isRun = true
@@ -154,7 +154,7 @@ func work() {
 
 }
 
-func memUsage() {
+func sendUsage() {
 
 	apps := service.GetServerApplication()
 
@@ -163,15 +163,25 @@ func memUsage() {
 	if len(apps) > 0 {
 		for _, app := range apps {
 
-			v := &models.MemStats{}
+			mv := &models.MemStats{}
+			cv := &models.CPUStats{}
 
-			err := usage.SetMemoryStats(app.ID.Hex(), v)
+			err := usage.SetMemoryStats(app.ID.Hex(), mv)
 
 			if err != nil {
 				log.Fatalf("App ID %s Memory Usage Setting Error %v\n", app.ID.Hex(), err)
 			}
-			v.Id = bson.NewObjectId()
-			log.Printf("Memory data ", v)
+
+			err := usage.SetCpuUsage(app.ID.Hex(), cv)
+
+			if err != nil {
+				log.Fatalf("App ID %s cpu Usage Setting Error %v\n", app.ID.Hex(), err)
+			}
+			mv.Id = bson.NewObjectId()
+			cv.Id = bson.NewObjectId()
+
+			log.Printf("Memory data ", mv)
+			log.Printf("Memory data ", cv)
 
 		}
 	}
