@@ -235,9 +235,8 @@ func sendUsage() {
 			log.Printf("cpu data ", cv)
 
 			i_ := make([]interface{}, 2)
-			i_[0] = mv
-			i_[1] = cv
-			go sendServer(i_)
+			append(i_, mv, cv)
+			go sendhander(i_)
 
 		}
 	}
