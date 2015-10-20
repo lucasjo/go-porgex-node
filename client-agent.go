@@ -1,9 +1,11 @@
 package main
 
 import (
+	"encoding/json"
 	"flag"
 	"fmt"
 	"log"
+	"net"
 	"os"
 	"syscall"
 	"time"
@@ -154,6 +156,53 @@ func work() {
 
 }
 
+func send(v interface{}) {
+	conn, err := net.Dial("tcp", "210.122.33.50:3001")
+
+	if err != nil {
+		log.Fatalln("connection error : ", err)
+	}
+
+	d, e := json.Marshal(v)
+
+	log.Println("data : ", string(d))
+
+	hostname, _ := os.Hostname()
+
+	var ser string
+
+	switch v.(type) {
+	case models.MemStats:
+		ser = "memory"
+	case models.CPUStats:
+		ser = "cpu"
+	}
+
+	req := &models.Request{
+		Service:  ser,
+		Fromhost: hostname,
+		Data:     d,
+	}
+
+	b, e := json.Marshal(req)
+
+	if e != nil {
+		os.Exit(1)
+	}
+
+	_, err = conn.Write(b)
+
+	conn.Close()
+
+}
+
+func sendhander(v_ []interface{}) {
+	for _, v := range v_ {
+		log.Printf("insert data %v\n", v)
+		go send(v)
+	}
+}
+
 func sendUsage() {
 
 	apps := service.GetServerApplication()
@@ -183,7 +232,12 @@ func sendUsage() {
 			cv.Id = bson.NewObjectId()
 
 			log.Printf("Memory data ", mv)
-			log.Printf("Memory data ", cv)
+			log.Printf("cpu data ", cv)
+
+			i_ := make([]interface{}, 2)
+			i_[0] = mv
+			i_[1] = cv
+			go sendServer(i_)
 
 		}
 	}
