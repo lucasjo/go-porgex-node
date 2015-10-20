@@ -234,7 +234,7 @@ func sendUsage() {
 			log.Printf("Memory data ", mv)
 			log.Printf("cpu data ", cv)
 
-			i_ := make([]interface{}, 2)
+			var i_ []interface{}
 			append(i_, mv, cv)
 			go sendhander(i_)
 
