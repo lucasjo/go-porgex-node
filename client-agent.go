@@ -132,7 +132,7 @@ var (
 func serviceOpen() {
 	//net dial connection 연결
 	var err error
-	conn, err = net.Dial("tcp", "210.122.33.50:3001")
+	conn, err := net.Dial("tcp", "210.122.33.50:3001")
 
 	if err != nil {
 		log.Println("connection error: ", err)
