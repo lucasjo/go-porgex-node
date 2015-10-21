@@ -194,12 +194,12 @@ func send(v interface{}, conn net.Conn) {
 
 	var ser string
 
-	log.Println("send data : ", reflect.TypeOf(v))
+	log.Println("send data : ", reflect.TypeOf(v).Name())
 
 	switch v.(type) {
-	case models.MemStats:
+	case *models.MemStats:
 		ser = "memory"
-	case models.CPUStats:
+	case *models.CPUStats:
 		ser = "cpu"
 	}
 
