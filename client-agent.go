@@ -126,13 +126,12 @@ var (
 	stop    = make(chan bool)
 	done    = make(chan struct{})
 	message = make(chan interface{})
-	quit    = make(chan bool)
 )
 
 func serviceOpen() {
 	//net dial connection 연결
 	var err error
-	conn, err := net.Dial("tcp", "210.122.33.50:3001")
+	conn, err := net.Dial("tcp", "10.128.2.47:3001")
 
 	if err != nil {
 		log.Println("connection error: ", err)
@@ -188,7 +187,7 @@ func send(v interface{}, conn net.Conn) {
 
 	d, e := json.Marshal(v)
 
-	log.Println("data : ", string(d))
+	//log.Println("data : ", string(d))
 
 	hostname, _ := os.Hostname()
 
@@ -212,13 +211,15 @@ func send(v interface{}, conn net.Conn) {
 	if e != nil {
 		os.Exit(1)
 	}
+	log.Println("send data : ", string(b))
 
-	_, err := conn.Write(b)
+	i, err := conn.Write(b)
+
+	log.Println("i : ", i)
 
 	if err != nil {
 		log.Fatalln("conn write error : ", err)
 	}
-	quit <- true
 
 }
 
@@ -257,8 +258,8 @@ func sendUsage() {
 			mv.Id = bson.NewObjectId()
 			cv.Id = bson.NewObjectId()
 
-			log.Printf("Memory data ", mv)
-			log.Printf("cpu data ", cv)
+			//log.Printf("Memory data ", mv)
+			//log.Printf("cpu data ", cv)
 
 			var i_ []interface{}
 			i_ = append(i_, mv, cv)
