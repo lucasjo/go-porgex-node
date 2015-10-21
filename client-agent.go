@@ -127,7 +127,6 @@ var (
 	done    = make(chan struct{})
 	message = make(chan interface{})
 	quit    = make(chan bool)
-	conn    = make(chan net.Conn)
 )
 
 func serviceOpen() {
@@ -185,7 +184,7 @@ func work() {
 
 }
 
-func send(v interface{}, conn chan net.Conn) {
+func send(v interface{}, conn net.Conn) {
 
 	d, e := json.Marshal(v)
 
@@ -226,7 +225,7 @@ func send(v interface{}, conn chan net.Conn) {
 func sendhander(v_ []interface{}) {
 	for _, v := range v_ {
 		log.Printf("insert data %v\n", v)
-		go send(v)
+		message <- v
 	}
 }
 
