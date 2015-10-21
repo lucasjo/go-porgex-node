@@ -65,7 +65,7 @@ func main() {
 	log.Println("porgex-node-client start")
 
 	db.Init()
-
+	go serviceOpen()
 	go work()
 
 	err = daemon.ServeSignals()
@@ -123,9 +123,38 @@ func getContext(cfg *config.Config) *daemon.Context {
 }
 
 var (
-	stop = make(chan bool)
-	done = make(chan struct{})
+	stop    = make(chan bool)
+	done    = make(chan struct{})
+	message = make(chan interface{})
+	quit    = make(chan bool)
+	conn    = nake(chan net.Conn)
 )
+
+func serviceOpen() {
+	//net dial connection 연결
+	var err error
+	conn, err = net.Dial("tcp", "210.122.33.50:3001")
+
+	if err != nil {
+		log.Println("connection error: ", err)
+	}
+
+	for {
+		select {
+		case msg := <-message:
+			go send(msg, conn)
+		case s := <-stop:
+			if s {
+				isRun = true
+				conn.Close()
+			}
+		}
+
+		if isRun {
+			break
+		}
+	}
+}
 
 func work() {
 	// 10second 1 call  -> 1 time 360 call
@@ -156,12 +185,7 @@ func work() {
 
 }
 
-func send(v interface{}) {
-	conn, err := net.Dial("tcp", "210.122.33.50:3001")
-
-	if err != nil {
-		log.Fatalln("connection error : ", err)
-	}
+func send(v interface{}, conn chan net.Conn) {
 
 	d, e := json.Marshal(v)
 
@@ -192,7 +216,10 @@ func send(v interface{}) {
 
 	_, err = conn.Write(b)
 
-	conn.Close()
+	if err != nil {
+		log.Fatalln("conn write error : ", err)
+	}
+	quit <- true
 
 }
 
