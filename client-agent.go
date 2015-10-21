@@ -7,6 +7,7 @@ import (
 	"log"
 	"net"
 	"os"
+	"reflect"
 	"syscall"
 	"time"
 
@@ -193,7 +194,7 @@ func send(v interface{}, conn net.Conn) {
 
 	var ser string
 
-	log.Println("send data : ", v.(type))
+	log.Println("send data : ", reflect.TypeOf(v))
 
 	switch v.(type) {
 	case models.MemStats:
