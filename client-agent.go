@@ -7,7 +7,6 @@ import (
 	"log"
 	"net"
 	"os"
-	"reflect"
 	"syscall"
 	"time"
 
@@ -194,8 +193,6 @@ func send(v interface{}, conn net.Conn) {
 
 	var ser string
 
-	log.Println("send data : ", reflect.TypeOf(v).Name())
-
 	switch v.(type) {
 	case *models.MemStats:
 		ser = "memory"
@@ -217,8 +214,6 @@ func send(v interface{}, conn net.Conn) {
 	log.Println("send data : ", string(b))
 
 	i, err := conn.Write(b)
-
-	log.Println("i : ", i)
 
 	if err != nil {
 		log.Fatalln("conn write error : ", err)
