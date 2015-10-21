@@ -127,7 +127,7 @@ var (
 	done    = make(chan struct{})
 	message = make(chan interface{})
 	quit    = make(chan bool)
-	conn    = nake(chan net.Conn)
+	conn    = make(chan net.Conn)
 )
 
 func serviceOpen() {
@@ -214,7 +214,7 @@ func send(v interface{}, conn chan net.Conn) {
 		os.Exit(1)
 	}
 
-	_, err = conn.Write(b)
+	_, err := conn.Write(b)
 
 	if err != nil {
 		log.Fatalln("conn write error : ", err)
