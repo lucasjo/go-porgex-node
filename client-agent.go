@@ -213,7 +213,7 @@ func send(v interface{}, conn net.Conn) {
 	}
 	log.Println("send data : ", string(b))
 
-	i, err := conn.Write(b)
+	_, err := conn.Write(b)
 
 	if err != nil {
 		log.Fatalln("conn write error : ", err)
@@ -223,8 +223,8 @@ func send(v interface{}, conn net.Conn) {
 
 func sendhander(v_ []interface{}) {
 	for _, v := range v_ {
-		log.Printf("insert data %v\n", v)
 		message <- v
+		time.Sleep(time.Second * 5)
 	}
 }
 
